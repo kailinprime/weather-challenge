@@ -22,4 +22,8 @@ This application was built with ember-cli.
 
 * `ember build`
 
-For more information on using ember-cli, visit [http://iamstef.net/ember-cli/](http://iamstef.net/ember-cli/).
+## For Funzies
+
+* Added Bootstrap
+* Added Font Awesome
+* Using LESS via Broccoli
