@@ -17,6 +17,7 @@
   },
   "author": "",
   "license": "MIT",
+  "APIMethod": "stub",
   "devDependencies": {
     "body-parser": "^1.2.0",
     "broccoli-asset-rev": "0.0.17",

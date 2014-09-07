@@ -4,7 +4,8 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var app = new EmberApp();
 app.import('vendor/bootstrap/dist/js/bootstrap.js');
-
+app.import('vendor/lodash/dist/lodash.min.js');
+app.import('vendor/ember-localstorage-adapter/localstorage_adapter.js');
 // Use `app.import` to add additional libraries to the generated
 // output files.
 //

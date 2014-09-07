@@ -1,0 +1,38 @@
+<!-- Begin new location form -->
+<form class="row navbar-form navbar-left" role="create" {{action 'commit' on='submit'}}>
+    <div class="form-group">
+        <div class="btn-group">
+            {{input value=location.name class="form-control" placeholder="Enter Location"}}
+        </div>
+        {{view 'radio-button-group' contentBinding="tempScales" valueBinding="location.scale" }}
+        {{view 'radio-button-group' contentBinding="forecastScopes" valueBinding="location.scope" }}
+    </div>
+    {{#if location.name}}
+        <button type="submit" class="btn btn-default">
+            <span><i class="fa fa-plus"></i></span>
+            <span>Commit</span>
+        </button>
+    {{/if}}
+</form>
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        {{#if location.name}}
+            <h3>Settings for <b>{{location.name}}'s</b> {{location.scope}} day forecast in {{location.scale}}&deg;</h3>
+        {{/if}}
+    </div>
+</div>
+<!-- End new location form -->
+{{#if errors}}
+    <div class="col-xs-12 col-md-8">
+        <div class="row">
+            <div class="well alert alert-warning" role="alert">
+                <ul class="list-group">
+                    {{#each errors}}
+                        <li class="list-group-item">{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+{{/if}}
