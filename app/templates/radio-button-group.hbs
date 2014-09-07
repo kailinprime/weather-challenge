@@ -1,0 +1,6 @@
+{{#each button in view.content}}
+    <label>
+        <input type="radio" {{bindAttr value="button.id"}} {{bindAttr name="view.groupName"}} />
+        {{button.answer}}
+    </label>
+{{/each}}
