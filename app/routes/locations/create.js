@@ -6,6 +6,10 @@ export default Ember.Route.extend({
         return Ember.Object.create({});
     },
 
+    setupController: function(controller, model) {
+        controller.set('model', model);
+    },
+
     renderTemplate: function(){
         var controller = this.get('controllers.locationsCreate');
         this.render('locations.location.edit', {

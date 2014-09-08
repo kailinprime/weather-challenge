@@ -38,14 +38,32 @@ Ember.ObjectController.extend({
                             location.set('lat', lat);
                             location.set('name', retCombinedName);
 
-                            location.save()
-                                .then(
-                                function (newLocation) {
-                                    me.transitionToRoute('location.index',newLocation);
-                                },
-                                function (newLocation) {
-                                    errors.push('Failed to save location');
+                            me.store.find('location',{name:location.get('name')})
+                                .then(function(oldLocation){
+                                    Ember.Logger.info('oldRecord', oldLocation);
+                                    if(oldLocation){
+                                        oldLocation.set('scope', location.get('scope'));
+                                        oldLocation.set('scale', location.get('scale'));
+                                        return location.deleteRecord()
+                                            .then(function(){
+                                                location = oldLocation;
+                                            });
+                                    }
                                 })
+                                .catch(function(){
+                                    errors.push('Failed to delete record');
+                                })
+                                .finally(function(){
+                                    location.save()
+                                        .then(function (newLocation) {
+                                            me.transitionToRoute('location.index',newLocation);
+                                        },
+                                        function () {
+                                            errors.push('Failed to save location');
+                                            me.set('errors', errors);
+                                            me.set('location', location);
+                                        });
+                                });
                         } else {
                             errors.push('Name \'' + name + '\' lookup returned : \'' + retCombinedName + '\' at [' + lat + ',' + lon + ']');
                             location.set('name', '');

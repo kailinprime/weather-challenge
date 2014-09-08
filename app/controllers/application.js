@@ -2,9 +2,11 @@ import Ember from 'ember';
 
 export default Ember.ArrayController.extend({
     hasLocations: function(){
-        return this.get('locations').length > 0;
-    }.property('locations'),
+        var x = this.get('locations').get('length') > 0;
+        Ember.Logger.info(x);
+        return x;
+    }.property('locations.[]'),
     locations: function(){
-        return this.store.all('location');
+        return this.store.find('location');
     }.property('model')
 });

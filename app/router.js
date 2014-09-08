@@ -9,6 +9,7 @@ Router.map(function() {
     this.resource('locations', function(){
         this.resource('location', {path:'/:location_id'}, function(){
            this.route('edit');
+           this.route('show');
         });
         this.route('create');
     });
