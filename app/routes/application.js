@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-    model: function() {
-        this.store.findAll('location');
+    model: function(){
+        return this.store.all('location');
     }
 });

@@ -7,8 +7,8 @@ export default Ember.Route.extend({
     },
 
     renderTemplate: function(){
-        var controller = this.get('controllers.locationsEdit');
-        this.render('locations.location.edit', {
+        var controller = this.get('controllers.locationEdit');
+        this.render('location.edit', {
             controller: controller
         });
     }

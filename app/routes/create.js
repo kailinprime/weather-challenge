@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
     model: function(){
         // the model for this route is a new empty Ember.Object
-        return Ember.Object.create({});
+        return this.store.createRecord('location',{});
     },
 
     setupController: function(controller, model) {
@@ -11,8 +11,8 @@ export default Ember.Route.extend({
     },
 
     renderTemplate: function(){
-        var controller = this.get('controllers.locationsCreate');
-        this.render('locations.location.edit', {
+        var controller = this.get('controllers.create');
+        this.render('location.edit', {
             controller: controller
         });
     }
