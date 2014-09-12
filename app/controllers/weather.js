@@ -127,9 +127,11 @@ Ember.ObjectController.extend({
             n.geolocation.getCurrentPosition(function (position) {
                 location.set('lat', position.coords.latitude);
                 location.set('lon', position.coords.longitude);
+                Ember.Logger.info('setting lat long', location);
                 return location;
             });
         } else {
+            Ember.Logger.info('no location', location);
             return location;
         }
     }

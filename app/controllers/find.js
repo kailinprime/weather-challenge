@@ -7,7 +7,8 @@ export default Ember.ObjectController.extend({
     forecast: null,
     actions: {
         currentWeather: function () {
-            var weatherController = this.get('controllers.weather');
+            var me = this;
+            var weatherController = me.get('controllers.weather');
             var model = this.get('model');
             me.set('current',null);
 
@@ -17,14 +18,15 @@ export default Ember.ObjectController.extend({
                 });
         },
         forecastWeather: function () {
-            var weatherController = this.get('controllers.weather');
+            var me = this;
+            var weatherController = me.get('controllers.weather');
             var model = this.get('model');
             me.set('forecast',null);
 
             return weatherController.currentForecast(model)
                 .done(function(report){
                     me.set('forecast',report);
-                });;
+                });
         }
     }
 });
