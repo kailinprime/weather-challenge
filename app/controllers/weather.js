@@ -1,11 +1,11 @@
 import Ember from 'ember';
 var _ = window._;
 
-export default
-Ember.ObjectController.extend({
+export default Ember.ObjectController.extend({
     error: null,
     urlForCurrentWeatherIn: function (location) {
         try {
+            Ember.Logger.info('urlForCurrentWeatherIn', location._attributes);
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
             var city = location.get('name');
@@ -22,6 +22,7 @@ Ember.ObjectController.extend({
             } else {
                 params.push('q=' + cityParam);
             }
+            Ember.Logger.info('params', params);
             return 'http://api.openweathermap.org/data/2.5/weather?' + params.join('&');
         } catch (e) {
             Ember.Logger.info('urlForCurrentWeatherIn', location);
@@ -30,10 +31,11 @@ Ember.ObjectController.extend({
     },
     urlForForecastIn: function (location) {
         try {
+            Ember.Logger.info('urlForForecastIn', location._attributes);
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
             var scope = location.get('scope');
-            var scopeParam = (scope === 5) ? 5 : 14;
+            var scopeParam = (scope === '5') ? 5 : 14;
             var city = location.get('name');
             city = (city) ? city.split(',')[0] : null;
             var country = location.get('country');
@@ -44,6 +46,7 @@ Ember.ObjectController.extend({
             params.push('units=' + scaleParam);
             params.push('cnt=' + scopeParam);
             params.push('mode=json');
+
             if (latParam !== null) {
                 params.push('lat=' + latParam);
                 params.push('lon=' + lonParam);
@@ -52,7 +55,7 @@ Ember.ObjectController.extend({
             }
             return 'http://api.openweathermap.org/data/2.5/forecast/daily?' + params.join('&');
         } catch (e) {
-            Ember.Logger.info('urlForForecastIn', location);
+            Ember.Logger.info('error urlForForecastIn', location);
             throw e;
         }
     },
@@ -93,19 +96,21 @@ Ember.ObjectController.extend({
         var me = this;
         me.set('error', null);
         var uri = me.urlForCurrentWeatherIn(location);
+        Ember.Logger.info('verify location with', uri);
         return Ember.$.ajax(uri)
             .done(function (data) {
+                Ember.Logger.info('locationVerification', data);
                 if (data.cod !== 200) {
                     me.set('error', data.cod + ' : ' + data.message);
                 } else {
                     var name = location.get('name');
                     var retName = (data && data.name) ? data.name.split(',')[0] : null;
-                    var retCountry = (data && data.sys && data.sys.country) ? data.sys.country : null;
-                    var retCombinedName = [retName, retCountry].join(',');
+                    var retCountry = (data && data.sys && data.sys.country) ? data.sys.country : '';
+                    var retCombinedName = _.compact([retName, retCountry]).join(',');
                     var lat = (data && data.coord && data.coord.lat) ? data.coord.lat : null;
                     var lon = (data && data.coord && data.coord.lon) ? data.coord.lon : null;
 
-                    if (!_.contains(retCombinedName.toLowerCase(), name.toLowerCase())) {
+                    if (name && !_.contains(retCombinedName.toLowerCase(), name.toLowerCase())) {
                         var msg = 'Name \'' + name + '\' lookup returned : \'' + retCombinedName + '\' at [' + lat + ',' + lon + ']';
                         me.set('error', msg);
                     }

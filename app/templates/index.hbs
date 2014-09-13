@@ -1,5 +1,35 @@
 <div class="container">
-    id = {{location.id}}
-    {{weather-current model=current class="panel current"}}
-    {{weather-forecast model=forecast class="panel forecast"}}
+    <div class="well well-lg form-horizontal">
+        {{#if location.name}}
+            <div class="form-group .container-fluid">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="btn-group">
+                        <h2>{{location.name}},{{location.country}}</h2>
+                    </div>
+                    <div class="btn-group">
+                        <h3>(<i>{{location.lat}},{{location.lon}}</i>)</h3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-6">
+                        <label>Temp Scale:</label>
+                        {{view 'radio-button-group' contentBinding="tempScales" valueBinding="location.scale" class='btn-block'}}
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <label>Forecast:</label>
+                        {{view 'radio-button-group' contentBinding="forecastScopes" valueBinding="location.scope" class='btn-block'}}
+                    </div>
+                </div>
+            </div>
+        {{else}}
+            <div class="row alert alert-info">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+                <h3>Finding location</h3>
+            </div>
+        {{/if}}
+    </div>
+    {{#if location.name}}
+        {{weather-current model=current class="current"}}
+        {{weather-forecast model=forecast class="forecast"}}
+    {{/if}}
 </div>
