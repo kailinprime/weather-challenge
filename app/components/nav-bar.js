@@ -3,7 +3,13 @@ import Ember from 'ember';
 export default Ember.Component.extend({
    hasLocations: function(){
        var locations = this.get('locations');
-       return (locations && locations.get('length') > 0);
+       var hasLocations = false;
+       locations.forEach(function(loc){
+           if(loc.get('name')){
+               hasLocations = true;
+           }
+       })
+       return hasLocations;
    }.property('locations.@each.name'),
    locations: null
 });
