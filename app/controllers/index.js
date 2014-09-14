@@ -17,7 +17,6 @@ export default Ember.ObjectController.extend({
         var me = this;
         var location = me.get('location');
         if(location) {
-            Ember.Logger.info('getCurrent', location);
             me.set('current', null);
             var weatherController = me.get('controllers.weather');
             weatherController.currentWeather(location)
@@ -31,7 +30,6 @@ export default Ember.ObjectController.extend({
         var location = me.get('location');
         if(location){
 
-        Ember.Logger.info('getForecast',location);
         me.set('forecast', null);
         var weatherController = me.get('controllers.weather');
         weatherController.currentForecast(location)
@@ -44,16 +42,16 @@ export default Ember.ObjectController.extend({
         var me = this;
         var location = me.get('location');
         if(location) {
-            Ember.Logger.info('getLocationVerification', location);
             var weatherController = me.get('controllers.weather');
             weatherController.locationVerification(location);
         }
     }.observes('location.lon'),
     init: function() {
         var me = this;
-        var location = me.get('location');
+        var location = me.get('model');
         if(!location){
             location = me.store.createRecord('location');
+            Ember.Logger.info('index.init', location.get('id'));
         }
 
         var weatherController = me.get('controllers.weather');

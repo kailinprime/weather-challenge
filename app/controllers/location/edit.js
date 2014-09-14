@@ -19,6 +19,7 @@ Ember.ObjectController.extend({
         var currentLocation = me.get('location');
         currentLocation.save()
             .then(function (newLocation) {
+                Ember.Logger.info('edit.saveAndTransition', newLocation.get('id'));
                 me.set('location',me.store.createRecord('location'));
                 me.transitionToRoute('location.index', newLocation);
             });
@@ -43,10 +44,6 @@ Ember.ObjectController.extend({
                         if (oldLocations.length > 0) {
                             var oldLocation = oldLocations[0];
 
-                            Ember.Logger.info('replacing old record');
-
-                            oldLocation.set('scope', currentLocation.get('scope'));
-                            oldLocation.set('scale', currentLocation.get('scale'));
                             currentLocation.deleteRecord()
                                 .then(function () {
                                     me.set('location', currentLocation);
@@ -59,7 +56,6 @@ Ember.ObjectController.extend({
                                     me.set('errors', errors);
                                 });
                         } else {
-                            Ember.Logger.info('saving new record');
                             me.saveAndTransition();
                         }
                     }
@@ -71,15 +67,11 @@ Ember.ObjectController.extend({
         }
     },
     init: function () {
-//        var loc = this.get('location');
-//        if (loc === null) {
-//            this.set('location', this.store.createRecord('location', {}));
-//        }
-//        loc = this.get('location');
-        var loc = this.store.createRecord('location', {});
-        this.set('location',loc);
-        loc.set('scope', loc.get('scope'));
-        loc.set('scale', loc.get('scale'));
+        var location = this.store.createRecord('location', {});
+        Ember.Logger.info('edit.init', location.get('id'));
+        this.set('location',location);
+        location.set('scope', location.get('scope'));
+        location.set('scale', location.get('scale'));
     }
 })
 ;

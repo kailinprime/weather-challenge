@@ -5,7 +5,6 @@ export default Ember.ObjectController.extend({
     error: null,
     urlForCurrentWeatherIn: function (location) {
         try {
-            Ember.Logger.info('urlForCurrentWeatherIn', location._attributes);
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
             var city = location.get('name');
@@ -22,16 +21,13 @@ export default Ember.ObjectController.extend({
             } else {
                 params.push('q=' + cityParam);
             }
-            Ember.Logger.info('params', params);
             return 'http://api.openweathermap.org/data/2.5/weather?' + params.join('&');
         } catch (e) {
-            Ember.Logger.info('urlForCurrentWeatherIn', location);
             throw e;
         }
     },
     urlForForecastIn: function (location) {
         try {
-            Ember.Logger.info('urlForForecastIn', location._attributes);
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
             var scope = location.get('scope');
@@ -55,7 +51,6 @@ export default Ember.ObjectController.extend({
             }
             return 'http://api.openweathermap.org/data/2.5/forecast/daily?' + params.join('&');
         } catch (e) {
-            Ember.Logger.info('error urlForForecastIn', location);
             throw e;
         }
     },
@@ -96,10 +91,8 @@ export default Ember.ObjectController.extend({
         var me = this;
         me.set('error', null);
         var uri = me.urlForCurrentWeatherIn(location);
-        Ember.Logger.info('verify location with', uri);
         return Ember.$.ajax(uri)
             .done(function (data) {
-                Ember.Logger.info('locationVerification', data);
                 if (data.cod !== 200) {
                     me.set('error', data.cod + ' : ' + data.message);
                 } else {
@@ -132,11 +125,9 @@ export default Ember.ObjectController.extend({
             n.geolocation.getCurrentPosition(function (position) {
                 location.set('lat', position.coords.latitude);
                 location.set('lon', position.coords.longitude);
-                Ember.Logger.info('setting lat long', location);
                 return location;
             });
         } else {
-            Ember.Logger.info('no location', location);
             return location;
         }
     }
