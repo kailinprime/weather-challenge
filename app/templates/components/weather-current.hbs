@@ -1,10 +1,28 @@
 {{#if model}}
-    <div class="well well-lg">
-        {{json-out model}}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item">Current temperature is {{model.main.temp}}&deg;</li>
+                <li class="list-group-item">Today's High {{model.main.temp_max}}&deg;</li>
+                <li class="list-group-item">Today's Low {{model.main.temp_min}}&deg;</li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <ul class="list-group">
+                {{#each item in model.weather}}
+                    <li class="list-group-item">{{item.main}} are {{item.description}}</li>
+                {{/each}}
+                <li class="list-group-item">Winds speed of {{item.wind.speed}} out of
+                    the {{compass-direction model.wind.deg}}</li>
+                <li class="list-group-item">Humidity saturation of {{model.main.humidity}}&#37;</li>
+            </ul>
+        </div>
     </div>
 {{else}}
     <div class="alert alert-info">
-        <i class="fa fa-refresh fa-spin fa-3x"></i>
+        <span class="fa fa-refresh fa-spin fa-3x"></span>
+
         <h3>Current weather loading</h3>
     </div>
 {{/if}}
+

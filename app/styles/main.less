@@ -37,3 +37,47 @@ body > .container {
   padding-right: 15px;
   padding-left: 15px;
 }
+
+/* Open Weather iconography
+-------------------------------------------------- */
+
+.weather-icon(@i) {
+  height: 50px;
+  width: 50px;
+  background-image: url('/assets/owm/@{i}.png');
+}
+
+.owm-01d { .weather-icon('01d'); };
+.owm-01n { .weather-icon('01n'); };
+
+.owm-02d { .weather-icon('02d'); };
+.owm-02n { .weather-icon('02n'); };
+
+.owm-03d { .weather-icon('03d'); };
+.owm-03n { .weather-icon('03n'); };
+
+.owm-04d { .weather-icon('04d'); };
+.owm-04n { .weather-icon('04n'); };
+
+.owm-09d { .weather-icon('09d'); };
+.owm-09n { .weather-icon('09n'); };
+
+.owm-10d { .weather-icon('10d'); };
+.owm-10n { .weather-icon('10n'); };
+
+.owm-11d { .weather-icon('11d'); };
+.owm-11n { .weather-icon('11n'); };
+
+.owm-13d { .weather-icon('13d'); };
+.owm-13n { .weather-icon('13n'); };
+
+.owm-50d { .weather-icon('50d'); };
+.owm-50n { .weather-icon('50n'); };
+
+.forecast div:nth-child(odd) {
+  background: @odd-color;
+}
+
+.forecast div:nth-child(even) {
+  background: @even-color;
+}
