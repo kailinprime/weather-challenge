@@ -49,13 +49,14 @@ export default Ember.ObjectController.extend({
     init: function() {
         var me = this;
         var location = me.get('model');
+        Ember.Logger.info('---- index model',location);
         if(!location){
             location = me.store.createRecord('location');
             Ember.Logger.info('index.init', location.get('id'));
+            var weatherController = me.get('controllers.weather');
+            weatherController.browserLocation(location);
         }
 
-        var weatherController = me.get('controllers.weather');
-        weatherController.browserLocation(location);
         me.set('location', location);
     }
 });

@@ -28,7 +28,7 @@
                             {{#each location in locations}}
                                 <li>
                                     {{#if location.name}}
-                                        {{#link-to 'find' location}}{{location.name}}, {{location.country}}{{/link-to}}
+                                        {{#link-to 'show' location}}{{location.name}}, {{location.country}}{{/link-to}}
                                     {{/if}}
                                 </li>
                             {{/each}}

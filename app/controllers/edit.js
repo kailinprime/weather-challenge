@@ -21,7 +21,7 @@ Ember.ObjectController.extend({
             .then(function (newLocation) {
                 Ember.Logger.info('edit.saveAndTransition', newLocation.get('id'));
                 me.set('location',me.store.createRecord('location'));
-                me.transitionToRoute('location.index', newLocation);
+                me.transitionToRoute('show', newLocation.get('id'));
             });
     },
     actions: {

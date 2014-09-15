@@ -6,11 +6,10 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
-    this.resource('location', {path: '/:location_id'}, function () {
-        this.route('edit');
-    });
+    this.route('index', {path: '/'});
+    this.route('show', {path: '/:location_id'});
+    this.route('edit', {path: '/:location_id/edit'});
     this.route('create');
-    this.route('find', {path: '/:location_id'});
     this.route('missing', { path: '/*path'});
 });
 
