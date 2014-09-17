@@ -1,28 +1,32 @@
 {{#if model}}
-    {{#each item in model.list}}
-        <div class="row col-xs-12">
-            <span class="col-xs-6 col-xs-offset-0 col-md-2 col-md-offset-2">
-                    <b>{{date-format item.dt}}</b>
-            </span>
-            {{#each weatherItem in item.weather}}
-                {{view 'weather-icon' valueBinding="weatherItem.icon" class='pull-left' tagName='span'}}
-            {{/each}}
-            <span class="col-xs-6 col-md-2">
-                {{item.temp.min}}&deg; / {{item.temp.max}}&deg;
-            </span>
-            <span class="col-xs-6 col-md-2">
-                {{item.humidity}} &#37; Humidity
-            </span>
-            {{#each weatherItem in item.weather}}
+    <div class="panel">
+        <div class="panel-body">
+            {{#each item in model.list}}
+                <div class="col-xs-12">
+                <span class="col-xs-6 col-xs-offset-0 col-md-2 col-md-offset-2">
+                        <b>{{date-format item.dt}}</b>
+                </span>
+                    {{#each weatherItem in item.weather}}
+                        {{view 'weather-icon' valueBinding="weatherItem.icon" class='pull-left' tagName='span'}}
+                    {{/each}}
+                    <span class="col-xs-6 col-md-2">
+                    {{item.temp.min}}&deg; / {{item.temp.max}}&deg;
+                </span>
                 <span class="col-xs-6 col-md-2">
-                        {{weatherItem.main}} <i>({{weatherItem.description}})</i>
-                    </span>
+                    {{item.humidity}} &#37; Humidity
+                </span>
+                    {{#each weatherItem in item.weather}}
+                        <span class="col-xs-6 col-md-2">
+                            {{weatherItem.main}} <i>({{weatherItem.description}})</i>
+                        </span>
+                    {{/each}}
+                    <span class="col-xs-6 col-md-2">
+                        {{compass-direction item.deg}} at {{item.speed}}
+                </span>
+                </div>
             {{/each}}
-            <span class="col-xs-6 col-md-2">
-                    {{compass-direction item.deg}} at {{item.speed}}
-            </span>
         </div>
-    {{/each}}
+    </div>
 {{else}}
     <div class="alert alert-info">
         <span><h3>Forecast loading</h3></span><span class="fa fa-refresh fa-spin fa-2x"></span>

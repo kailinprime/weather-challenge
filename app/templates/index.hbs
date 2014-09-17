@@ -1,7 +1,7 @@
 <div class="container">
-    <div class="well well-lg form-horizontal">
-        {{#if location.name}}
-            <div class="form-group .container-fluid">
+    {{#if location.name}}
+        <div class="well well-lg form-horizontal">
+            <div class="form-group">
                 <div class="col-xs-12 col-sm-6">
                     <div class="btn-group">
                         <h2>{{location.name}},{{location.country}}</h2>
@@ -13,20 +13,20 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="col-xs-12 col-sm-6">
                         <label>Temp Scale:</label>
-                        {{view 'radio-button-group' contentBinding="tempScales" valueBinding="location.scale" class='btn-block'}}
+                        {{view 'radio-button-group' contentBinding="tempScales" valueBinding="location.scale" class='btn-block btn-group-justified'}}
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <label>Forecast:</label>
-                        {{view 'radio-button-group' contentBinding="forecastScopes" valueBinding="location.scope" class='btn-block'}}
+                        {{view 'radio-button-group' contentBinding="forecastScopes" valueBinding="location.scope" class='btn-block btn-group-justified'}}
                     </div>
                 </div>
             </div>
-        {{else}}
-            <div class="row alert alert-info">
-                <span><h3>Finding location</h3></span><span class="fa fa-refresh fa-spin fa-2x"></span>
-            </div>
-        {{/if}}
-    </div>
+        </div>
+    {{else}}
+        <div class="row alert alert-info">
+            <span><h3>Finding location</h3></span><span class="fa fa-refresh fa-spin fa-2x"></span>
+        </div>
+    {{/if}}
     {{#if location.name}}
         {{weather-current model=current class="current"}}
         {{weather-forecast model=forecast class="forecast"}}
