@@ -5,8 +5,7 @@ export default Ember.Route.extend({
         return this.store.all('error');
     },
     setupController: function(controller, model) {
-        var errorController = this.controllerFor('error');
-        errorController.addError(model.message);
+        alert(model.message);
         this.transitionTo('index');
     }
 });

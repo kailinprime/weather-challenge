@@ -6,7 +6,15 @@ var Location = DS.Model.extend({
     scale: DS.attr('string', {defaultValue: 'F'}),
     scope: DS.attr('number', {defaultValue: 5}),
     lat: DS.attr('number', {defaultValue: null}),
-    lon: DS.attr('number', {defaultValue: null})
+    lon: DS.attr('number', {defaultValue: null}),
+    isValid: function(){
+        return (
+            this.get('name') &&
+            this.get('country') &&
+            this.get('lat') &&
+            this.get('lon')
+        );
+    }.observes('name','country','lat','lon')
 });
 
 Location.reopenClass({

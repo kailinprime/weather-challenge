@@ -56,11 +56,5 @@ export default Ember.ObjectController.extend({
         }
 
         me.set('location', location);
-    },
-    actions: {
-        clearErrors: function(){
-            Ember.Logger.info('handle clearErrors from index con');
-            this.get('controllers.error').clearErrors();
-        }
     }
 });

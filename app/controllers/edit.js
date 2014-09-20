@@ -1,14 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.ObjectController.extend({
-    needs: ['weather','error'],
-    error: Ember.computed.alias('controllers.error'),
-    addError: function(msg){
-        this.get('error').addError(msg);
-    },
-    errorCount: function(){
-        return this.get('errors').get('errorCount');
-    }.property('controllers.error.errorCount'),
+    needs: ['weather'],
     isEdit: false,
     tempScales: [
         {label: 'Fahrenheit', value: 'F'},
@@ -19,15 +12,27 @@ export default Ember.ObjectController.extend({
         {label: '14 day', value: 14}
     ],
     location: null,
+    errorMessage: null,
+    errorWatch: function(){
+        var weatherError = this.get('controllers.weather.errorMessage');
+        if(weatherError !== null){
+            this.set('errorMessage',weatherError);
+        }
+    }.observes('controllers.weather.errorMessage'),
+    addError: function(msg){
+        this.set('errorMessage', msg);
+    },
+    clearError: function(){
+        this.set('errorMessage', null);
+    },
     saveAndTransition: function () {
         var me = this;
         var currentLocation = me.get('location');
-        var errorCount = me.get('error').get('errorCount');
-        Ember.Logger.info('errorCount',errorCount);
-        if(errorCount === 0) {
+        if(!me.get('errorMessage') && currentLocation.get('isValid')) {
             currentLocation.save()
                 .then(function (loc) {
                     me.set('location', me.store.createRecord('location', {}));
+                    me.clearError();
                     me.transitionToRoute('show', loc);
                 })
                 .catch(function (err) {
@@ -38,6 +43,8 @@ export default Ember.ObjectController.extend({
     actions: {
         commit: function () {
             var me = this;
+            me.clearError();
+
             var currentLocation = me.get('location');
             var weatherService = this.get('controllers.weather');
             currentLocation.set('country',null);
@@ -46,7 +53,6 @@ export default Ember.ObjectController.extend({
                     me.saveAndTransition();
                 })
                 .fail(function (err) {
-                    me.addError('Close errors to try again');
                     me.addError(err.message);
                 });
         }

@@ -2,10 +2,12 @@ import Ember from 'ember';
 var _ = window._;
 
 export default Ember.ObjectController.extend({
-    needs: ['error'],
-    error: Ember.computed.alias('controllers.error'),
+    errorMessage: null,
     addError: function(msg){
-        this.get('error').addError(msg);
+        this.set('errorMessage', msg);
+    },
+    clearError: function(){
+        this.set('errorMessage', null);
     },
     urlForCurrentWeatherIn: function (location) {
         var me = this;
@@ -62,6 +64,7 @@ export default Ember.ObjectController.extend({
     },
     currentForecast: function (location) {
         var me = this;
+        me.clearError();
         var uri = me.urlForForecastIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
@@ -73,6 +76,7 @@ export default Ember.ObjectController.extend({
     },
     currentWeather: function (location) {
         var me = this;
+        me.clearError();
         var uri = me.urlForCurrentWeatherIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
@@ -84,6 +88,7 @@ export default Ember.ObjectController.extend({
     },
     locationVerification: function (location) {
         var me = this;
+        me.clearError();
         var uri = me.urlForCurrentWeatherIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
@@ -113,6 +118,8 @@ export default Ember.ObjectController.extend({
             });
     },
     browserLocation: function (location) {
+        var me = this;
+        me.clearError();
         var n = navigator;
         if (n.geolocation) {
             n.geolocation.getCurrentPosition(function (position) {
