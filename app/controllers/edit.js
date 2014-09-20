@@ -1,5 +1,31 @@
 import Ember from 'ember';
 
+/**
+ * This Edit controller is badly named.
+ * this is actually the create route, but it retains the current working record and saves out a new one when
+ * commit is clicked
+ *
+ * Behavior:
+ * - when trying to commit, the location is passed to the weather controller and is altered by the api lookup
+ * - if the location is not found or a different name is returned, then the name is changed and you can resubmit
+ *  to keep the change
+ *      Example:
+ *      - try to find '123'
+ *      - the api returns 'Noida, India'.
+ *      - The city, Noida, is set and a message is returned
+ *      - To save, just commit again or change the name.
+ * - Once a valid city/country combo is set, it will redirect to the index
+ *
+ * Notes:
+ * - I hate the errorMessage mechanism. Given a more robust app and someone to ask,
+ *  we could refactor this into a controller/route/model/view but all attempts at this hit a scoping brick wall.
+ *
+ * Roadmap suggestions:
+ * - On key press, make the input do a lookup for the name/names
+ * - Implement Delete
+ * - Implement an Edit of a given location
+ * - Implement an on demand location service lookup for when you have changed locations
+ */
 export default Ember.ObjectController.extend({
     needs: ['weather'],
     isEdit: false,

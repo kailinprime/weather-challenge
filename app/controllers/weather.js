@@ -1,6 +1,13 @@
 import Ember from 'ember';
 var _ = window._;
 
+/**
+ * Location controller is where the magic happens:
+ *
+ * Note:
+ *  - Hate errorMessage mechanism. After much headache, this solution of a local handler and message is enough.
+ *
+ */
 export default Ember.ObjectController.extend({
     errorMessage: null,
     addError: function(msg){
@@ -9,6 +16,9 @@ export default Ember.ObjectController.extend({
     clearError: function(){
         this.set('errorMessage', null);
     },
+    /**
+     * takes a location and builds the url for retrieving current weather for a location
+     */
     urlForCurrentWeatherIn: function (location) {
         var me = this;
         try {
@@ -33,6 +43,9 @@ export default Ember.ObjectController.extend({
             me.addError('urlForCurrentWeatherIn:' + e.message);
         }
     },
+    /**
+     * takes a location and builds the url for retrieving forecast weather for a location
+     */
     urlForForecastIn: function (location) {
         var me = this;
         try {
@@ -62,6 +75,10 @@ export default Ember.ObjectController.extend({
             me.addError('urlForForecastIn:' + e.message);
         }
     },
+    /**
+     * Get the forecast using a location
+     * - Does not mutate the location
+     */
     currentForecast: function (location) {
         var me = this;
         me.clearError();
@@ -74,6 +91,10 @@ export default Ember.ObjectController.extend({
                 this.addError('currentForecast:' + e.message);
             });
     },
+    /**
+     * Get the current weather using a location
+     * - Does not mutate the location
+     */
     currentWeather: function (location) {
         var me = this;
         me.clearError();
@@ -86,6 +107,18 @@ export default Ember.ObjectController.extend({
                 me.addError('currentWeather:' + e.message);
             });
     },
+    /**
+     * Use a location and the api to get a valid location
+     * - Mutates the name, country, lat and lon depending on the return value from the api.
+     * - Has some weirdness where certain values return valid locations.
+     * - If a location is not found, report the error
+     * - Validates the name agains the name and country, setting the name if they done' checkout.
+     *      Example:
+     *          - name = 123
+     *          - returns Noida, India.
+     *          - locationVerification sets the name = 'Noida'
+     *          and allows for the verification step to be run again
+     */
     locationVerification: function (location) {
         var me = this;
         me.clearError();
@@ -117,12 +150,17 @@ export default Ember.ObjectController.extend({
                 me.addError('locationVerification:' + e.message);
             });
     },
+    /**
+     * If you don't allow the browser to show your location, you can still use the service by adding a location manually
+     */
+    gavePermission: false,
     browserLocation: function (location) {
         var me = this;
         me.clearError();
         var n = navigator;
         if (n.geolocation) {
             n.geolocation.getCurrentPosition(function (position) {
+                me.set('gavePermission',true);
                 location.set('lat', position.coords.latitude);
                 location.set('lon', position.coords.longitude);
                 return location;

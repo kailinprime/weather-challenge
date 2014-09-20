@@ -1,5 +1,12 @@
 import Ember from 'ember';
 
+/**
+ * Display the current weather and forecast for a location
+ *
+ * Notes:
+ * - Allow the location services or click 'Add Location' to get started
+ * - On any location, if you change the scale or the forecast, the lookup is repeated
+ */
 export default Ember.ObjectController.extend({
     needs: ['weather'],
     location: null,
@@ -46,6 +53,9 @@ export default Ember.ObjectController.extend({
             weatherController.locationVerification(location);
         }
     }.observes('location.lon'),
+    missingPermission: function(){
+        return !this.get('controllers.weather').get('gavePermission');
+    }.property('controllers.weather.gavePermission'),
     init: function() {
         var me = this;
         var location = me.get('model');

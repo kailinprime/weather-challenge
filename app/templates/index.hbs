@@ -26,6 +26,17 @@
         <div class="row alert alert-info">
             <span class="fa fa-refresh fa-spin fa-3x"></span><span><h3>Finding location</h3></span>
         </div>
+    {{#if missingPermission}}
+        <div class="row alert alert-warning">
+            <span>
+                <h3>Grant access to the location services on your browser or </h3>
+                {{#link-to 'create'}}
+                    <span><i class="fa fa-plus"></i></span>
+                        <span>Add Location</span>
+                {{/link-to}}
+            </span>
+        </div>
+    {{/if}}
     {{/if}}
     {{#if location.name}}
         {{weather-current model=current class="current" scale=location.scale}}

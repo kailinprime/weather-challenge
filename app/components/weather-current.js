@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
+/**
+ * display of the current weather for a given location
+ */
 export default Ember.Component.extend({
-    hasModel: Ember.computed.equal('model.readyState',1),
     model: null
 });

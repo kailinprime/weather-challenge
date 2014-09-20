@@ -1,5 +1,8 @@
 import DS from 'ember-data';
 
+/**
+ * A location to use in the openweather.org api
+ */
 var Location = DS.Model.extend({
     name: DS.attr(),
     country: DS.attr(),
@@ -9,14 +12,18 @@ var Location = DS.Model.extend({
     lon: DS.attr('number', {defaultValue: null}),
     isValid: function(){
         return (
-            this.get('name') &&
-            this.get('country') &&
-            this.get('lat') &&
-            this.get('lon')
+            this.get('name') !== null &&
+            this.get('name') !== '' &&
+            this.get('country') !== null &&
+            this.get('country') !== '' &&
+            this.get('lat') !== null &&
+            this.get('lon') !== null
         );
     }.observes('name','country','lat','lon')
 });
-
+/**
+ * Never got this working to try with fixtures. Something to do with using local storage
+ */
 Location.reopenClass({
     FIXTURES: [
         {id: 1, name: 'Milwaukee', country: 'WI', scale: 'F', scope: 5, lon: -87.91, lat:43.04},
@@ -25,5 +32,4 @@ Location.reopenClass({
     ]
 });
 
-export default
-Location;
+export default Location;

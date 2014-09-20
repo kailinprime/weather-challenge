@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
+/**
+ * We hijack the edit route, but never implemented the ACTUAL edit route.
+ */
 export default Ember.Route.extend({
     setupController: function(controller, model) {
         controller.set('model', model);

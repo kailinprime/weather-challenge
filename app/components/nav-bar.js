@@ -1,5 +1,10 @@
 import Ember from 'ember';
 
+/**
+ * Navigation
+ * - watch for and jump to locations
+ * - prevent click event from firing after toggling on the current route
+ */
 export default Ember.Component.extend({
     hasLocations: function () {
         var locations = this.get('locations');
