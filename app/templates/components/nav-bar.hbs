@@ -8,11 +8,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            {{#link-to 'index' class='navbar-brand'}}Current{{/link-to}}
+            {{#link-to 'index' class='navbar-brand'}}<span {{action 'close'}}>Current</span>{{/link-to}}
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li>
+                <li {{action 'close'}}>
                     {{#link-to 'create'}}
                         <span><i class="fa fa-plus"></i></span>
                         <span>Add Location</span>
@@ -26,7 +26,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             {{#each location in locations}}
-                                <li>
+                                <li {{action 'close'}}>
                                     {{#if location.name}}
                                         {{#link-to 'show' location}}{{location.name}}, {{location.country}}{{/link-to}}
                                     {{/if}}

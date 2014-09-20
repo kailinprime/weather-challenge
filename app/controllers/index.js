@@ -6,8 +6,8 @@ export default Ember.ObjectController.extend({
     current: null,
     forecast: null,
     tempScales: [
-        {label: 'Fahrenheit', value: 'F'},
-        {label: 'Celsius', value: 'C'}
+        {label: 'Fahrenheit / MPH', value: 'F'},
+        {label: 'Celsius / KPH', value: 'C'}
     ],
     forecastScopes: [
         {label: '5 day', value: 5},
@@ -49,14 +49,18 @@ export default Ember.ObjectController.extend({
     init: function() {
         var me = this;
         var location = me.get('model');
-        Ember.Logger.info('---- index model',location);
         if(!location){
             location = me.store.createRecord('location');
-            Ember.Logger.info('index.init', location.get('id'));
             var weatherController = me.get('controllers.weather');
             weatherController.browserLocation(location);
         }
 
         me.set('location', location);
+    },
+    actions: {
+        clearErrors: function(){
+            Ember.Logger.info('handle clearErrors from index con');
+            this.get('controllers.error').clearErrors();
+        }
     }
 });

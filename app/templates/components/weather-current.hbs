@@ -2,17 +2,17 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6">
             <ul class="list-group">
-                <li class="list-group-item">Current temperature is {{model.main.temp}}&deg;</li>
-                <li class="list-group-item">Today's High {{model.main.temp_max}}&deg;</li>
-                <li class="list-group-item">Today's Low {{model.main.temp_min}}&deg;</li>
+                <li class="list-group-item">Current temperature is <strong>{{model.main.temp}}&deg; {{scale}}</strong></li>
+                <li class="list-group-item">Today's <span class="high-temp">High {{model.main.temp_max}}</span>&deg; {{scale}}</li>
+                <li class="list-group-item">Today's <span class="low-temp">Low {{model.main.temp_min}}</span>&deg; {{scale}}</li>
             </ul>
         </div>
         <div class="col-xs-12 col-sm-6">
             <ul class="list-group">
                 {{#each item in model.weather}}
-                    <li class="list-group-item">{{item.main}} are {{item.description}}</li>
+                    <li class="list-group-item">{{item.main}} <i>({{item.description}})</i></li>
                 {{/each}}
-                <li class="list-group-item">Winds speed of {{item.wind.speed}} out of
+                <li class="list-group-item">Winds speed of {{model.wind.speed}} {{wind-speed scale}} out of
                     the {{compass-direction model.wind.deg}}</li>
                 <li class="list-group-item">Humidity saturation of {{model.main.humidity}}&#37;</li>
             </ul>
@@ -20,7 +20,7 @@
     </div>
 {{else}}
     <div class="alert alert-info">
-        <span><h3>Current weather loading</h3></span><span class="fa fa-refresh fa-spin fa-2x"></span>
+        <span class="fa fa-refresh fa-spin fa-2x"></span><span><h3>Current weather loading</h3></span>
     </div>
 {{/if}}
 

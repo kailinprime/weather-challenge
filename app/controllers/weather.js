@@ -2,8 +2,13 @@ import Ember from 'ember';
 var _ = window._;
 
 export default Ember.ObjectController.extend({
-    error: null,
+    needs: ['error'],
+    error: Ember.computed.alias('controllers.error'),
+    addError: function(msg){
+        this.get('error').addError(msg);
+    },
     urlForCurrentWeatherIn: function (location) {
+        var me = this;
         try {
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
@@ -23,10 +28,11 @@ export default Ember.ObjectController.extend({
             }
             return 'http://api.openweathermap.org/data/2.5/weather?' + params.join('&');
         } catch (e) {
-            throw e;
+            me.addError('urlForCurrentWeatherIn:' + e.message);
         }
     },
     urlForForecastIn: function (location) {
+        var me = this;
         try {
             var scale = location.get('scale');
             var scaleParam = (scale === 'C') ? 'metric' : 'imperial';
@@ -35,7 +41,7 @@ export default Ember.ObjectController.extend({
             var city = location.get('name');
             city = (city) ? city.split(',')[0] : null;
             var country = location.get('country');
-            var cityParam = _.compact([city,country]).join(',');
+            var cityParam = _.compact([city, country]).join(',');
             var latParam = location.get('lat');
             var lonParam = location.get('lon');
             var params = [];
@@ -51,50 +57,38 @@ export default Ember.ObjectController.extend({
             }
             return 'http://api.openweathermap.org/data/2.5/forecast/daily?' + params.join('&');
         } catch (e) {
-            throw e;
+            me.addError('urlForForecastIn:' + e.message);
         }
     },
     currentForecast: function (location) {
         var me = this;
-        me.set('error', null);
         var uri = me.urlForForecastIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
-                if (data.cod !== 200) {
-                    me.set('error', 'Error [' + data.cod + '] retrieving forecast: ' + data.message);
-                } else {
-                    return data;
-                }
+                return data;
             })
             .fail(function (e) {
-                me.set('error', e.message);
+                this.addError('currentForecast:' + e.message);
             });
     },
     currentWeather: function (location) {
         var me = this;
-        me.set('error', null);
         var uri = me.urlForCurrentWeatherIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
-                if (data.cod !== 200) {
-                    me.set('error', 'Error [' + data.cod + '] retrieving current weather: ' + data.message);
-                } else {
-                    return data;
-                }
+                return data;
             })
             .fail(function (e) {
-                me.set('success', false);
-                me.set('error', e.message);
+                me.addError('currentWeather:' + e.message);
             });
     },
     locationVerification: function (location) {
         var me = this;
-        me.set('error', null);
         var uri = me.urlForCurrentWeatherIn(location);
         return Ember.$.ajax(uri)
             .done(function (data) {
                 if (data.cod !== 200) {
-                    me.set('error', data.cod + ' : ' + data.message);
+                    me.addError('locationVerification:' + data.cod);
                 } else {
                     var name = location.get('name');
                     var retName = (data && data.name) ? data.name.split(',')[0] : null;
@@ -105,7 +99,7 @@ export default Ember.ObjectController.extend({
 
                     if (name && !_.contains(retCombinedName.toLowerCase(), name.toLowerCase())) {
                         var msg = 'Name \'' + name + '\' lookup returned : \'' + retCombinedName + '\' at [' + lat + ',' + lon + ']';
-                        me.set('error', msg);
+                        me.addError(msg);
                     }
                     location.set('lon', lon);
                     location.set('lat', lat);
@@ -115,8 +109,7 @@ export default Ember.ObjectController.extend({
                 return location;
             })
             .fail(function (e) {
-                me.set('error', e.message);
-                return location;
+                me.addError('locationVerification:' + e.message);
             });
     },
     browserLocation: function (location) {

@@ -24,11 +24,11 @@
         </div>
     {{else}}
         <div class="row alert alert-info">
-            <span><h3>Finding location</h3></span><span class="fa fa-refresh fa-spin fa-2x"></span>
+            <span class="fa fa-refresh fa-spin fa-3x"></span><span><h3>Finding location</h3></span>
         </div>
     {{/if}}
     {{#if location.name}}
-        {{weather-current model=current class="current"}}
-        {{weather-forecast model=forecast class="forecast"}}
+        {{weather-current model=current class="current" scale=location.scale}}
+        {{weather-forecast model=forecast class="forecast" scale=location.scale scope=location.scope}}
     {{/if}}
 </div>

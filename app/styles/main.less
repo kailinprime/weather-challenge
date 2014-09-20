@@ -74,10 +74,18 @@ body > .container {
 .owm-50d { .weather-icon('50d'); };
 .owm-50n { .weather-icon('50n'); };
 
-.forecast div:nth-child(odd) {
+.forecast .panel-body div:nth-child(odd) {
   background: @odd-color;
 }
 
-.forecast div:nth-child(even) {
+.forecast .panel-body div:nth-child(even) {
   background: @even-color;
+}
+
+.high-temp {
+  color: @high-temp;
+}
+
+.low-temp {
+  color: @low-temp;
 }
